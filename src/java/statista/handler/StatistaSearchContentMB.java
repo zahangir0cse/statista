@@ -27,6 +27,7 @@ public class StatistaSearchContentMB {
     StringBuilder sb = new StringBuilder();
     List<String> list = new ArrayList<>();
     Map<String, String> map = new HashMap<>();
+    Map<String, String> titleMap = new HashMap<>();
     StatistaSearchContent statistaSearchContent = new StatistaSearchContent();
 
     public StatistaSearchContent getStatistaSearchContent() {
@@ -60,6 +61,16 @@ public class StatistaSearchContentMB {
     public void setMap(Map<String, String> map) {
         this.map = map;
     }
+
+    public Map<String, String> getTitleMap() {
+        return titleMap;
+    }
+
+    public void setTitleMap(Map<String, String> titleMap) {
+        this.titleMap = titleMap;
+    }
+    
+    
     
     public String loadSearchContent() throws JSONDownloaderException {
         statistaSearchContent.setSearchContent(statistaSearchContent.getSearchContent());
@@ -72,7 +83,7 @@ public class StatistaSearchContentMB {
                 String searchContent = statistaSearchContent.getSearchContent();
                 String limitation = statistaSearchContent.getLimit();
                 String language = statistaSearchContent.getLanguage();
-                URL url = new URL("https://api.statista.com/searchJson/apiKey/here_statista_api_key/q/" + searchContent + "/sort/1/lang/" + language + "/limit/" + limitation + "/datefrom/0/dateto/0/will");
+                URL url = new URL("https://api.statista.com/searchJson/apiKey/api_key_here/q/" + searchContent + "/sort/1/lang/" + language + "/limit/" + limitation + "/datefrom/0/dateto/0/will");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setReadTimeout(10000);
@@ -93,7 +104,9 @@ public class StatistaSearchContentMB {
                 StatistaArticleList articleList = gson.fromJson(reader, StatistaArticleList.class);
                 for (int i = 0; i < Integer.parseInt(limitation); i++) {
                     String jsn = gson.toJson(articleList.getStatistaArticles().get(i));
+                    String title = articleList.getStatistaArticles().get(i).getTitle();
                     map.put(jsn, jsn);
+                    titleMap.put("Title: "+ title, jsn);
                 }
 
                 return null;
