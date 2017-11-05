@@ -32,9 +32,11 @@
                 </p:commandButton>
             </p:panelGrid>
             
-            <h:selectManyListbox value="#{statistaSearchContentMB.list}" id="statista">
+            <h:selectManyListbox value="#{wordpressAPI.list}" id="statista">
                 <f:selectItems value="#{statistaSearchContentMB.titleMap}" />
             </h:selectManyListbox>
+            
+            <p:outputLabel value="#{wordpressAPI.test()}"/> 
         </h:form>
     </h:body>
 </html>

@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import statista.exception.JSONDownloaderException;
 import statista.model.StatistaArticleList;
+import statista.service.StatistaService;
 
 @ManagedBean
 @SessionScoped
@@ -84,15 +85,7 @@ public class StatistaSearchContentMB {
                 String limitation = statistaSearchContent.getLimit();
                 String language = statistaSearchContent.getLanguage();
                 URL url = new URL("https://api.statista.com/searchJson/apiKey/api_key_here/q/" + searchContent + "/sort/1/lang/" + language + "/limit/" + limitation + "/datefrom/0/dateto/0/will");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setReadTimeout(10000);
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
-                connection.setUseCaches(false);
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestProperty("Accept", "application/json");
-                connection.connect();
+                HttpURLConnection connection = StatistaService.getHttpURLConnection(url, null);
                 br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
                 String line;
                 while ((line = br.readLine()) != null) {
